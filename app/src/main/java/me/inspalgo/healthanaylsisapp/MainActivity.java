@@ -36,12 +36,12 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
 
         mButton = findViewById(R.id.button);
         mButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 // 输入检查
                 if (!inputCheck())
                     return;
-
 
                 // 传值
                 // mHeight mWeight mAge
@@ -49,9 +49,11 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
 
 
                 // 接收来自远端的分析，此时出现等待
-
+                for (int i = 0; i < 5; i++)
+                    TransferData.sRadarChartData[i] = (i * 10 + i * 2 + i) * 0.01;
 
                 Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+
                 startActivity(intent);
 
                 // 设置切换动画，从右边进入，左边退出

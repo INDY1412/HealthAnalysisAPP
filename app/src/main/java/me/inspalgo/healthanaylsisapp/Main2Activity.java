@@ -29,17 +29,22 @@ import com.github.mikephil.charting.utils.MPPointF;
 import java.util.ArrayList;
 
 public class Main2Activity extends AppCompatActivity {
-    PieChart mPieChart;
+    PieChart mPieChart, mPieChart2;
     RadarChart mRadarChart;
+    private double[] mRadarChartData = {0, 0, 0, 0, 0, 0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        for (int i = 0; i < 5; i++)
+            mRadarChartData[i] = TransferData.sRadarChartData[i];
 
         mPieChart = findViewById(R.id.pieChart);
         setPieChart();
+        mPieChart2 = findViewById(R.id.pieChart2);
+        setPieChart2();
 
         mRadarChart = findViewById(R.id.radarChart);
         setRadarChart();
@@ -56,11 +61,13 @@ public class Main2Activity extends AppCompatActivity {
 //        s.setSpan(new ForegroundColorSpan(Color.GRAY), 9, s.length() - 10, 0);
 //        s.setSpan(new RelativeSizeSpan(.8f), 9, s.length() - 10, 0);
 //        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 9, s.length(), 0);
-//        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 9, s.length(), 0);
+//        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 9, s
+// .length(), 0);
 //        return s;
 //    }
     private void setPieChart() {
-        mPieChart.setUsePercentValues(true);  // 当前值显示成百分比，如果不设置这个属性pieData.setValueFormatter设置显示的是错误的
+        mPieChart.setUsePercentValues(true);  // 当前值显示成百分比，如果不设置这个属性pieData
+        // .setValueFormatter设置显示的是错误的
         mPieChart.getDescription().setEnabled(false);  // 右下角description不显示
         // TODO 设置中间文字有线程问题，故删去
         //mPieChart.setCenterText(generateCenterSpannableText());  // 设置中间文字
@@ -103,7 +110,8 @@ public class Main2Activity extends AppCompatActivity {
         String[] mIntro = {"yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu"};
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        // NOTE: The order of the entries when being added to the entries array determines their position around the
+        // NOTE: The order of the entries when being added to the entries array determines their
+        // position around the
         // center of
         // the chart.
         for (int i = 0; i < mIntro.length; i++) {
@@ -154,6 +162,101 @@ public class Main2Activity extends AppCompatActivity {
         mPieChart.highlightValues(null);
 
         mPieChart.invalidate();
+    }
+
+
+    private void setPieChart2(){
+        mPieChart2.setUsePercentValues(true);  // 当前值显示成百分比，如果不设置这个属性pieData
+        // .setValueFormatter设置显示的是错误的
+        mPieChart2.getDescription().setEnabled(false);  // 右下角description不显示
+        // TODO 设置中间文字有线程问题，故删去
+        //mPieChart.setCenterText(generateCenterSpannableText());  // 设置中间文字
+        mPieChart2.setDrawHoleEnabled(true);  // 是否显示成同心圆的形式
+        mPieChart2.setHoleColor(Color.WHITE);  // 同心圆的圆心颜色
+        mPieChart2.setTransparentCircleColor(Color.WHITE);  // 设置同心圆的中心圆和外圈之间的颜色
+        mPieChart2.setTransparentCircleAlpha(110);  // 设置同心圆的中心圆和外圈之间的颜色透明度
+        mPieChart2.setDrawCenterText(false);  // 是否显示中间的文字
+        mPieChart2.setRotationAngle(0);  //  饼图旋转角度
+        mPieChart2.animateY(1400, Easing.EasingOption.EaseInOutQuad);  // 动画
+
+        Legend legend2 = mPieChart2.getLegend();  // legend的设置
+        legend2.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend2.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend2.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend2.setDrawInside(false);
+        legend2.setXEntrySpace(7f);
+        legend2.setYEntrySpace(0f);
+        legend2.setYOffset(0f);
+        mPieChart2.setEntryLabelColor(Color.WHITE);
+        mPieChart2.setEntryLabelTextSize(12f);
+
+        mPieChart2.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry entry, Highlight h) {
+                // toastUI(entry.getY() + "");
+            }
+
+            @Override
+            public void onNothingSelected() {
+                // toastUI("nothing");
+            }
+        });
+
+        setPieChartData2();
+    }
+
+    private void setPieChartData2(){
+        String[] mIntro2 = {"yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu"};
+        ArrayList<PieEntry> entries2 = new ArrayList<>();
+
+        for (int i = 0; i < mIntro2.length; i++) {
+            entries2.add(new PieEntry((float) ((Math.random() * 100) + 100 / 5),
+                    mIntro2[i % mIntro2.length],
+                    getResources().getDrawable(R.drawable.star)));
+        }
+
+        PieDataSet dataSet2 = new PieDataSet(entries2, "");
+
+        dataSet2.setDrawIcons(false);  // 不显示实体类中的图片
+        dataSet2.setSliceSpace(3f);  // 每一个部分分割空白宽度
+        dataSet2.setIconsOffset(new MPPointF(0, 40));
+        dataSet2.setSelectionShift(5f);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors2 = new ArrayList<>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors2.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors2.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors2.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors2.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors2.add(c);
+
+        colors2.add(ColorTemplate.getHoloBlue());
+
+        dataSet2.setColors(colors2);
+        //dataSet.setSelectionShift(0f);
+
+        PieData data2 = new PieData(dataSet2);
+        data2.setValueFormatter(new PercentFormatter());  // 值添加百分比
+        data2.setValueTextSize(11f);  // 值的字体大小
+        data2.setValueTextColor(Color.WHITE);  // 值的字体颜色
+
+        mPieChart2.setData(data2);
+
+        // undo all highlights
+        mPieChart2.highlightValues(null);
+
+        mPieChart2.invalidate();
     }
 
 
@@ -231,7 +334,7 @@ public class Main2Activity extends AppCompatActivity {
             float val1 = (float) (Math.random() * mul) + min;
             entries1.add(new RadarEntry(val1));
 
-            float val2 = (float) (Math.random() * mul) + min;
+            float val2 = (float) (mRadarChartData[i] * mul) + min;
             entries2.add(new RadarEntry(val2));
         }
 
